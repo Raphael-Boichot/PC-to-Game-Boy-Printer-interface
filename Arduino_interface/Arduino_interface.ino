@@ -5,13 +5,9 @@ One byte must be sent to the printer via serial, then one byte must be read on t
 
 The general protocol to use this code is like this: 
 - send an INIT command (it's shelf life is infinite)
-- wait 100 ms
 - send DATA packets
-- wait 100 ms
 - send an empty DATA packets (no payload)
-- wait 100 ms
 - send a PRINT data packets
-- wait 100 ms
 - send INQU data packets until print is over or just wait 1200 ms per packet sent
 */
 
