@@ -22,7 +22,7 @@ The pinout uses only 4 wires, so it's very easy to make ! Why not hooking SOUT t
 
 Well, this is as simple as it sounds:
 - Install the [Arduino IDE](https://www.arduino.cc/en/software) and [GNU Octave](https://octave.org/);
-- clone the repo locally;
+- Clone the repo locally;
 - Flash the [Arduino code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Arduino_interface/Arduino_interface.ino) to your Arduino Uno;
 - Drop some images **160 pixels width, 4 shades of gray (or less), png format (mandatory)**, in the [image folder](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Octave_Interface/Images). 1x screenshots from emulators and images from Game Boy Camera does the job perfectly;
 - Connect the Game Boy Printer to the Arduino and the Arduino to the PC. Nothing indicates if wiring is OK, trust yourself;
