@@ -9,7 +9,7 @@ Here GNU Octave is used to encode images into Game Boy Tile Format, make legit p
 ## Parts needed
 
 - An [Arduino Uno](https://fr.aliexpress.com/item/32848546164.html);
-- The [cheapest Game Boy serial cable you can find](https://fr.aliexpress.com/item/32698407220.html) as you will cut it. **Important note:** SIN and SOUT are crossed internally so never trust what wires you get. Use a multimeter to identify wires. Cross SIN and SOUT if the device does not work at the end.
+- The [cheapest Game Boy serial cable you can find](https://fr.aliexpress.com/item/32698407220.html) as you will cut it. **Important note:** SIN and SOUT are crossed internally so never trust what wires you get. Use a multimeter to identify wires. Cross SIN and SOUT if the device does not work at the end;
 - If you want something on the neat side, you can use a serial port breakout board instead of cutting a cable, there are tons of on internet for cheap.
 
 ## Pinout 
