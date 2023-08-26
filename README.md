@@ -27,11 +27,13 @@ Well, this is as simple as it sounds:
 
 ![Game Boy Printer to Arduino Uno pinout](Pictures/Principle.png)
 
+Do not trust the image which displays an Arduino jammed with wires as it is also used for other projects, the pinout is really as simple as described.
+
 ## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
 
 ## Known flaws
 
-This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy byte from the printer, it could stuff packets by groups of 9, it could take advantage from extra features from the print command. It does not do all of that, it does the job, that's all.
+This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy byte from the printer, it could stuff packets by groups of 9, it could take advantage of extra features from the print command. It does not do all of that, it does the job, that's all.
 
