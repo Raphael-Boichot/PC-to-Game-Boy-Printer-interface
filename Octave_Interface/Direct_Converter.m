@@ -7,6 +7,7 @@
   %-------------------------------------------------------------
   palette=0xE4;%any value is possible
   intensity=0x7F;%0x00->0x7F
+  serial_port='COM10';
   margin=3;
   INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; %INT command
   PRNT = [0x88 0x33 0x02 0x00 0x04 0x00 0x01 0x00 palette intensity];%, 0x2B, 0x01, 0x00, 0x00}; %PRINT without feed lines, default
@@ -16,7 +17,7 @@
   %--------------------------------------------------------------
   PRNT = add_checksum(PRNT);
   global arduinoObj
-  arduinoObj = serialport('COM10','baudrate',115200,'parity','none','timeout',255); %set the Arduino com port here
+  arduinoObj = serialport(serial_port,'baudrate',115200,'parity','none','timeout',255); %set the Arduino com port here
 
   packets=0;
   DATA_BUFFER=[];
