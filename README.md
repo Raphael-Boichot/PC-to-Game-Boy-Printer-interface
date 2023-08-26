@@ -4,6 +4,8 @@ The most cheap and basic device you can imagine to print something from a PC to 
 
 Here GNU Octave is used to encode images into Game Boy Tile Format, make legit printer packets with correct checksums and send them to the serial port in correct order. The Arduino acts as a luxury level shifter. It turns the serial data sent to the Arduino into an SPI protocol compatible with the printer, in particular regarding timings. 
 
+![Game Boy Printer to Arduino Uno pinout](Pictures/Principle.png)
+
 ## Parts needed
 
 - An [Arduino Uno](https://fr.aliexpress.com/item/32848546164.html);
@@ -26,8 +28,6 @@ Well, this is as simple as it sounds:
 - Connect the Game Boy Printer to the Arduino. Nothing indicates if wiring is OK, trust yourself;
 - Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the COM port corresponding to your Arduino board and run the code from the GNU Octave Launcher;
 - Enjoy you pictures !
-
-![Game Boy Printer to Arduino Uno pinout](Pictures/Principle.png)
 
 ## Example of fancy use
 
