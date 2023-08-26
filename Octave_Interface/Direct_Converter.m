@@ -147,7 +147,7 @@
           send_packet(EMPT);
           ##disp('Sending PRNT command');
           send_packet(PRNT);
-          pause(1.5);
+          pause(1.2);
           ##---------------------------------------------------
         end
       end
