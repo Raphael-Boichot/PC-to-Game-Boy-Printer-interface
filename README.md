@@ -24,7 +24,7 @@ Well, this is as simple as it sounds:
 - Install the [Arduino IDE](https://www.arduino.cc/en/software) and [GNU Octave](https://octave.org/);
 - clone the repo locally;
 - Flash the [Arduino code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Arduino_interface/Arduino_interface.ino) to your Arduino Uno;
-- Drop some images 160 pixels width, multiple of 16 pixel height, 4 shades of gray (or less) in the [image folder](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Octave_Interface/Images). 1x screenshots from emulators and images from Game Boy Camera does the job perfectly;
+- Drop some images 160 pixels width, multiple of 16 pixel height, 4 shades of gray (or less), png format, in the [image folder](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Octave_Interface/Images). 1x screenshots from emulators and images from Game Boy Camera does the job perfectly;
 - Connect the Game Boy Printer to the Arduino. Nothing indicates if wiring is OK, trust yourself;
 - Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/501a64547ecbee19f8b085f0f9f7bdd816af658a/Octave_Interface/Direct_Converter.m#L19) and run the code from the GNU Octave Launcher;
 - Enjoy you pictures !
