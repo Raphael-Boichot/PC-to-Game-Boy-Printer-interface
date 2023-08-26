@@ -12,7 +12,7 @@ The most cheap and basic device you can imagine to print something from a PC to 
 
 ![Game Boy Printer to Arduino Uno pinout](Pictures/Pinout.png)
 
-The pinout uses only 4 wires, so it's very easy. SIN and SOUT may be crossed so a non working setup may just due to this.
+The pinout uses only 4 wires, so it's very easy to make !
 
 ## How to use it
 
@@ -27,11 +27,11 @@ Well, this is as simple as it sounds:
 
 ![Game Boy Printer to Arduino Uno pinout](Pictures/Principle.png)
 
-Do not trust the image which displays an Arduino jammed with wires as it is also used for other projects, the pinout is really as simple as described.
-
 ## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
+
+Do not trust the image which displays an Arduino Uno packed with wires as it is also used for [other projects](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor), the pinout is really as simple as described.
 
 ## Known flaws
 
