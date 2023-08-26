@@ -26,7 +26,7 @@ Well, this is as simple as it sounds:
 - Flash the [Arduino code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Arduino_interface/Arduino_interface.ino) to your Arduino Uno;
 - Drop some images **160 pixels width, 4 shades of gray (or less), png format (mandatory)**, in the [image folder](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Octave_Interface/Images). 1x screenshots from emulators and images from Game Boy Camera does the job perfectly;
 - Connect the Game Boy Printer to the Arduino. Nothing indicates if wiring is OK, trust yourself;
-- Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/501a64547ecbee19f8b085f0f9f7bdd816af658a/Octave_Interface/Direct_Converter.m#L19) and run the code from the GNU Octave Launcher;
+- Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/e13f0a8247043a577f75674304a3ea3e64e7e601/Octave_Interface/Direct_Converter.m#L10) and run the code from the GNU Octave Launcher;
 - Enjoy your washed-out pictures !
 - It does not work ? Inverse SIN and SOUT and retry !
 
