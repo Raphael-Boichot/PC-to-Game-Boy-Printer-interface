@@ -3,7 +3,8 @@
   ##just run this script with images into the folder "Images"
   clc;
   clear;
-  pkg load instrument-control;
+  pkg load instrument-control
+  pkg load image
   ##-------------------------------------------------------------
   palette=0xE4;##any value is possible
   intensity=0x7F;##0x00->0x7F
@@ -32,103 +33,103 @@
     figure(1)
     a=a(:,:,1);
     [hauteur, largeur, profondeur]=size(a);
-    warning=0;
+    C=unique(a);
 
-    if not(largeur==160);disp('Image rejected: width is not 160 !'); warning=1; end
+    if (length(C)>4 || not(largeur==160));
+      a=imread(['Images/',currentfilename]);
+      disp('Color image rectified');
+      a=image_rectifier(a);
+      [hauteur, largeur, profondeur]=size(a);
+    end
 
-    Black=-1;
-    Dgray=-1;
-    Lgray=-1;
-    White=-1;
+    if length(C)==1;
+      disp('Empty image -> neutralization !');
+      a=zeros(hauteur, largeur);
+    end
+
+    if not(rem(hauteur,16)==0);##Fixing images not multiple of 16 pixels
+      disp('Image height is not a multiple of 16 : fixing image');
+      C=unique(a);
+      new_lines=ceil(hauteur/16)*16-hauteur;
+      color_footer=double(C(end));
+      footer=color_footer.*ones(new_lines,largeur, profondeur);
+      a=[a;footer];
+      [hauteur, largeur, profondeur]=size(a);
+    end
 
     C=unique(a);
-    if length(C)>4;disp('Image rejected: contains more than 4 levels of color or gray !'); warning=1;end
-    if length(C)==1;disp('Image rejected: empty image !'); warning=1;end
+    disp(['Buffering image ',currentfilename,' into GB tile data...'])
+    switch length(C)
+      case 4;
+        Black=C(1);
+        Dgray=C(2);
+        Lgray=C(3);
+        White=C(4);
+      case 3;
+        Black=C(1);
+        Dgray=C(2);
+        White=C(3);
+      case 2;
+        Black=C(1);
+        White=C(2);
+        end;
 
-    if not(warning==1);
-
-      if not(rem(hauteur,16)==0);##Fixing images not multiple of 16 pixels
-        disp('Image height is not a multiple of 16 : fixing image');
-        C=unique(a);
-        new_lines=ceil(hauteur/16)*16-hauteur;
-        color_footer=double(C(end));
-        footer=color_footer.*ones(new_lines,largeur, profondeur);
-        a=[a;footer];
-        [hauteur, largeur, profondeur]=size(a);
-      end
-
-      disp(['Buffering image ',currentfilename,' into GB tile data...'])
-      switch length(C)
-        case 4;
-          Black=C(1);
-          Dgray=C(2);
-          Lgray=C(3);
-          White=C(4);
-        case 3;
-          Black=C(1);
-          Dgray=C(2);
-          White=C(3);
-        case 2;
-          Black=C(1);
-          White=C(2);
-          end;
-
-          hor_tile=largeur/8;
-          vert_tile=hauteur/8;
-          tile=0;
-          H=1;
-          L=1;
-          H_tile=1;
-          L_tile=1;
-          O=[];
-          y_graph=0;
-          total_tiles=hor_tile*vert_tile;
-          for x=1:1:hor_tile
-            for y=1:1:vert_tile
-              tile=tile+1;
-              b=a((H:H+7),(L:L+7));
-              for i=1:8
-                for j=1:8
-                  if b(i,j)==Lgray;  V1(j)=('1'); V2(j)=('0');end
-                  if b(i,j)==Dgray;  V1(j)=('0'); V2(j)=('1');end
-                  if b(i,j)==White;  V1(j)=('0'); V2(j)=('0');end
-                  if b(i,j)==Black;  V1(j)=('1'); V2(j)=('1');end
-                end
-                O=[O,bin2dec(V1),bin2dec(V2)];
+        hor_tile=largeur/8;
+        vert_tile=hauteur/8;
+        tile=0;
+        H=1;
+        L=1;
+        H_tile=1;
+        L_tile=1;
+        O=[];
+        y_graph=0;
+        total_tiles=hor_tile*vert_tile;
+        for x=1:1:hor_tile
+          for y=1:1:vert_tile
+            tile=tile+1;
+            b=a((H:H+7),(L:L+7));
+            for i=1:8
+              for j=1:8
+                if b(i,j)==Lgray;  V1(j)=('1'); V2(j)=('0');end
+                if b(i,j)==Dgray;  V1(j)=('0'); V2(j)=('1');end
+                if b(i,j)==White;  V1(j)=('0'); V2(j)=('0');end
+                if b(i,j)==Black;  V1(j)=('1'); V2(j)=('1');end
               end
-              if tile==40
-                imshow(a)
-                h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [0, 1, 0]);
-                drawnow
-                y_graph=y_graph+16;
-                ##printing appends here, packets are sent by groups of 40 tiles
-                DATA_READY=[DATA,O];
-                DATA_READY = add_checksum(DATA_READY);
-                packets=packets+1;
-                disp(['Buffering DATA packet#',num2str(packets)]);
-                ##--------printing loop-----------------------------
-                send_packet(INIT);
-                pause(0.1);##skip the first packet without
-                disp(['Sending DATA packet#',num2str(packets)]);
-                send_packet(DATA_READY);
-                send_packet(EMPT);##mandatory in the protocol
-                send_packet(PRNT);
-                pause(1);##Time for the printer head to print one line of 16 pixels
-                ##---------------------------------------------------
-                O=[];
-                tile=0;
-              end
-              L=L+8;
-              L_tile=L_tile+1;
-              if L>=largeur
-                L=1;
-                L_tile=1;
-                H=H+8;
-                H_tile=H_tile+1;
-              end
+              O=[O,bin2dec(V1),bin2dec(V2)];
+            end
+            if tile==40
+              imshow(a)
+              h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [0, 1, 0]);
+              drawnow
+              y_graph=y_graph+16;
+              ##printing appends here, packets are sent by groups of 40 tiles
+              DATA_READY=[DATA,O];
+              DATA_READY = add_checksum(DATA_READY);
+              packets=packets+1;
+              disp(['Buffering DATA packet#',num2str(packets)]);
+              ##--------printing loop-----------------------------
+              send_packet(INIT);
+              pause(0.1);##skip the first packet without
+              disp(['Sending DATA packet#',num2str(packets)]);
+              send_packet(DATA_READY);
+              send_packet(EMPT);##mandatory in the protocol
+              send_packet(PRNT);
+              pause(1);##Time for the printer head to print one line of 16 pixels
+              ##---------------------------------------------------
+              O=[];
+              tile=0;
+            end
+            L=L+8;
+            L_tile=L_tile+1;
+            if L>=largeur
+              L=1;
+              L_tile=1;
+              H=H+8;
+              H_tile=H_tile+1;
             end
           end
         end
+
         packets=packets+3;
         imshow(a)
         drawnow
