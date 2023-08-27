@@ -1,28 +1,29 @@
-  %PC to Game Boy printer, Raphael BOICHOT 2023/08/26
-  %this must be run with GNU Octave
-  %just run this script with images into the folder "Images"
+  ##PC to Game Boy printer, Raphael BOICHOT 2023/08/26
+  ##this must be run with GNU Octave
+  ##just run this script with images into the folder "Images"
   clc;
   clear;
   pkg load instrument-control;
-  %-------------------------------------------------------------
-  palette=0xE4;%any value is possible
-  intensity=0x7F;%0x00->0x7F
-  serial_port='COM10';
+  ##-------------------------------------------------------------
+  palette=0xE4;##any value is possible
+  intensity=0x7F;##0x00->0x7F
+  margin=0x03; ##0 before margin, 3 after margins, used between images
+  serial_port='COM8';
   margin=3;
-  INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; %INT command
-  PRNT = [0x88 0x33 0x02 0x00 0x04 0x00 0x01 0x00 palette intensity];%, 0x2B, 0x01, 0x00, 0x00}; %PRINT without feed lines, default
-  INQU = [0x88 0x33 0x0F 0x00 0x00 0x00 0x0F 0x00 0x00 0x00]; %INQUIRY command
-  EMPT = [0x88 0x33 0x04 0x00 0x00 0x00 0x04 0x00 0x00 0x00]; %Empty data packet, mandatory for validate DATA packet
-  DATA = [0x88 0x33 0x04 0x00 0x80 0x02]; %DATA packet header, considering 640 bytes length by defaut (80 02), the footer is calculated onboard
-  %--------------------------------------------------------------
-  PRNT = add_checksum(PRNT);
+  INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; ##INT command
+  PRNT_INI = [0x88 0x33 0x02 0x00 0x04 0x00 0x01 0x00 palette intensity];##, 0x2B, 0x01, 0x00, 0x00}; %PRINT without feed lines, default
+  INQU = [0x88 0x33 0x0F 0x00 0x00 0x00 0x0F 0x00 0x00 0x00]; ##INQUIRY command
+  EMPT = [0x88 0x33 0x04 0x00 0x00 0x00 0x04 0x00 0x00 0x00]; ##Empty data packet, mandatory for validate DATA packet
+  DATA = [0x88 0x33 0x04 0x00 0x80 0x02]; ##DATA packet header, considering 640 bytes length by defaut (80 02), the footer is calculated onboard
+  ##--------------------------------------------------------------
+  PRNT = add_checksum(PRNT_INI);
   global arduinoObj
   arduinoObj = serialport(serial_port,'baudrate',115200,'parity','none','timeout',255); %set the Arduino com port here
 
   packets=0;
   DATA_BUFFER=[];
-  imagefiles = dir('Images/*.png');% the default format is png, other are ignored
-  nfiles = length(imagefiles);    % Number of files found
+  imagefiles = dir('Images/*.png');## the default format is png, other are ignored
+  nfiles = length(imagefiles);     ## Number of files found
 
   for k=1:1:nfiles
     currentfilename = imagefiles(k).name;
@@ -46,7 +47,7 @@
 
     if not(warning==1);
 
-      if not(rem(hauteur,16)==0);
+      if not(rem(hauteur,16)==0);##Fixing images not multiple of 16 pixels
         disp('Image height is not a multiple of 16 : fixing image');
         C=unique(a);
         new_lines=ceil(hauteur/16)*16-hauteur;
@@ -97,25 +98,22 @@
               end
               if tile==40
                 imshow(a)
-                h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',1,'FaceColor', [0, 1, 0]);
+                h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [0, 1, 0]);
                 drawnow
                 y_graph=y_graph+16;
-                %printing appends here, packets are sent by groups of 40 tiles
+                ##printing appends here, packets are sent by groups of 40 tiles
                 DATA_READY=[DATA,O];
                 DATA_READY = add_checksum(DATA_READY);
                 packets=packets+1;
                 disp(['Buffering DATA packet#',num2str(packets)]);
                 ##--------printing loop-----------------------------
-                ##disp('Sending INIT command');
                 send_packet(INIT);
-                pause(0.1);
+                pause(0.1);##skip the first packet without
                 disp(['Sending DATA packet#',num2str(packets)]);
                 send_packet(DATA_READY);
-                ##disp('Sending EMPT command');
-                send_packet(EMPT);
-                ##disp('Sending PRNT command');
+                send_packet(EMPT);##mandatory in the protocol
                 send_packet(PRNT);
-                pause(1.2);
+                pause(1);##Time for the printer head to print one line of 16 pixels
                 ##---------------------------------------------------
                 O=[];
                 tile=0;
@@ -132,24 +130,20 @@
           end
         end
         packets=packets+3;
-        DATA_READY=[DATA,zeros(1,640)];
-        DATA_READY = add_checksum(DATA_READY);
         imshow(a)
         drawnow
-        for i=1:1:margin
-          ##--------printing loop-----------------------------
-          ##disp('Sending INIT command');
-          send_packet(INIT);
-          pause(0.2);
-          disp('Sending MARGIN packet#');
-          send_packet(DATA_READY);
-          ##disp('Sending EMPT command');
-          send_packet(EMPT);
-          ##disp('Sending PRNT command');
-          send_packet(PRNT);
-          pause(1.2);
-          ##---------------------------------------------------
-        end
+        ##--------printing loop-----------------------------
+        send_packet(INIT);
+        pause(0.1);
+        send_packet(EMPT);##mandatory in the protocol
+        disp('Sending PRNT command with margin');
+        PRNT_INI(8)=margin; ##prepare PRINT command with margin
+        PRNT = add_checksum(PRNT_INI);
+        send_packet(PRNT);
+        pause(margin);
+        PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
+        PRNT = add_checksum(PRNT_INI);
+        ##---------------------------------------------------
       end
 
       disp('Closing serial port')
