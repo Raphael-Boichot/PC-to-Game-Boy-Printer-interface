@@ -38,5 +38,5 @@ Do not trust the image which displays an Arduino Uno packed with wires as it is 
 
 ## Known flaws
 
-This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy state from the printer, it could stuff packets by groups of 9 like the SD version, it could take advantage of extra features from the print command. It does not do all of that, it does the job, that's all. For various reasons I ran into some trouble with byte synchronisation on Octave side and prefered stick to the most simple working code.
+This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy state from the printer, it could stuff packets by groups of 9 like the SD version, it could take advantage of extra features from the print command. It does not all of that (maybe one day), it does the job, that's all. For various reasons I ran into some trouble with byte synchronisation on Octave side and prefered stick to the most simple working code.
 
