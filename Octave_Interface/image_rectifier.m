@@ -13,7 +13,7 @@ function [image_rectified]=image_rectifier(image_non_rectified)
   end
 
   [heigth, width,layers]=size(a);
-  a=imresize(a,160/width,"linear");
+  a=imresize(a,160/width,"cubic");
   [heigth, width,layers]=size(a);
 
   if not(rem(heigth,16)==0);##Fixing images not multiple of 16 pixels
@@ -23,6 +23,15 @@ function [image_rectified]=image_rectifier(image_non_rectified)
     footer=color_footer.*ones(new_lines,width, layers);
     a=[a;footer];
     [heigth, width,layers]=size(a);
+  end
+
+  ##2D edge enhancement
+  edge=a;
+  alpha=0.5;
+  for (y = 2:1:heigth-1)
+    for (x = 2:1:width-1)
+      a(y,x)=edge(y,x)+((edge(y,x)-edge(y-1,x))+(edge(y,x)-edge(y+1,x))+(edge(y,x)-edge(y,x-1))+(edge(y,x)-edge(y,x+1)))*alpha;
+    end
   end
 
   Bayer_matDG_B=[];

@@ -9,7 +9,7 @@
   palette=0xE4;##any value is possible
   intensity=0x7F;##0x00->0x7F
   margin=0x03; ##0 before margin, 3 after margins, used between images
-  serial_port='COM8'; ##modify you COM port here, could be something like '/dev/ttyS0' under Linux
+  serial_port='COM8';
   margin=3;
   INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; ##INT command
   PRNT_INI = [0x88 0x33 0x02 0x00 0x04 0x00 0x01 0x00 palette intensity];##, 0x2B, 0x01, 0x00, 0x00}; %PRINT without feed lines, default
@@ -109,7 +109,7 @@
               disp(['Buffering DATA packet#',num2str(packets)]);
               ##--------printing loop-----------------------------
               send_packet(INIT);
-              pause(0.1);##skip the first packet without
+              pause(0.2);##skip the first packet without
               disp(['Sending DATA packet#',num2str(packets)]);
               send_packet(DATA_READY);
               send_packet(EMPT);##mandatory in the protocol
@@ -135,7 +135,7 @@
         drawnow
         ##--------printing loop-----------------------------
         send_packet(INIT);
-        pause(0.1);
+        pause(0.2);
         send_packet(EMPT);##mandatory in the protocol
         disp('Sending PRNT command with margin');
         PRNT_INI(8)=margin; ##prepare PRINT command with margin
