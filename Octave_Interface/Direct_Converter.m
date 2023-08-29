@@ -49,8 +49,6 @@
       [heigth, width,layers]=size(a);
     end
 
-    C
-    width
     if (length(C)>4 || not(width==160));
       disp('8-bits image rectified and dithered with Bayer matrices');
       a=image_rectifier(a);
