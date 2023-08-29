@@ -5,10 +5,11 @@ One byte must be sent to the printer via serial, then one byte must be read on t
 
 The general protocol to use this code is like this: 
 - send an INIT command (it's shelf life is infinite)
+- Wait 200 ms
 - send DATA packets
 - send an empty DATA packets (no payload)
 - send a PRINT data packets
-- send INQU data packets until print is over or just wait 1200 ms per packet sent
+- send INQU data packets until print is over 
 */
 
 char byte_read;
