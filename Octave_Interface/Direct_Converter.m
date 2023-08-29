@@ -3,6 +3,11 @@
   ##just run this script with images into the folder "Images"
   clc;
   clear;
+
+  disp('-----------------------------------------------------------')
+  disp('|Beware, this code is for GNU Octave ONLY !!!             |')
+  disp('-----------------------------------------------------------')
+
   pkg load instrument-control
   pkg load image
   ##-------------------------------------------------------------
@@ -114,7 +119,10 @@
               send_packet(DATA_READY);
               send_packet(EMPT);##mandatory in the protocol
               send_packet(PRNT);
-              pause(1);##Time for the printer head to print one line of 16 pixels
+              for i=1:1:10
+                pause(0.1);##Time for the printer head to print one line of 16 pixels
+                send_packet(INQU);
+              end
               ##---------------------------------------------------
               O=[];
               tile=0;
@@ -141,7 +149,10 @@
         PRNT_INI(8)=margin; ##prepare PRINT command with margin
         PRNT = add_checksum(PRNT_INI);
         send_packet(PRNT);
-        pause(margin);
+        for i=1:1:10*margin
+          pause(0.1);##Time for the printer head to print one line of 16 pixels
+          send_packet(INQU);
+        end
         PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
         PRNT = add_checksum(PRNT_INI);
         ##---------------------------------------------------

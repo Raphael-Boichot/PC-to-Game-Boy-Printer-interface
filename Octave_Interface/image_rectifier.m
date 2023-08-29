@@ -30,7 +30,7 @@ function [image_rectified]=image_rectifier(image_non_rectified)
   alpha=0.5;
   for (y = 2:1:heigth-1)
     for (x = 2:1:width-1)
-      a(y,x)=edge(y,x)+((edge(y,x)-edge(y-1,x))+(edge(y,x)-edge(y+1,x))+(edge(y,x)-edge(y,x-1))+(edge(y,x)-edge(y,x+1)))*alpha;
+      a(y,x)=edge(y,x)+(4*edge(y,x)-edge(y-1,x)-edge(y+1,x)-edge(y,x-1)-edge(y,x+1)).*alpha;
     end
   end
 
@@ -77,5 +77,5 @@ function [image_rectified]=image_rectifier(image_non_rectified)
     end
   end
 
-  image_rectified=uint8(a);
+  image_rectified=(a);
 
