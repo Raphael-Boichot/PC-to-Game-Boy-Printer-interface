@@ -138,6 +138,7 @@
                 pause(0.1);##Time for the printer head to print one line of 16 pixels
                 send_packet(INQU);
               end
+              pause(0.2);
               ##---------------------------------------------------
               O=[];
               tile=0;
@@ -170,6 +171,7 @@
         end
         PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
         PRNT = add_checksum(PRNT_INI);
+        pause(0.2);
         ##---------------------------------------------------
       end
 
