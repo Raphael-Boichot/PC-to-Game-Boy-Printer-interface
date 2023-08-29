@@ -35,33 +35,44 @@
     currentfilename = imagefiles(k).name;
     a=imread(['Images/',currentfilename]);
     disp(['Converting image ',currentfilename,' in progress...'])
-    figure(1)
-    a=a(:,:,1);
-    [hauteur, largeur, profondeur]=size(a);
+
+    [height, width, layers]=size(a);
+    if layers>1
+      a=rgb2gray(a);
+      [height, width, layers]=size(a);
+    end
     C=unique(a);
 
-    if (length(C)>4 || not(largeur==160));
-      a=imread(['Images/',currentfilename]);
-      disp('Color image rectified');
+    if (length(C)<=4 && not(width==160));
+      disp('Image is 2 bpp or less, which is good, but bad size: fixing it');
+      a=imresize(a,160/width,"nearest");
+      [heigth, width,layers]=size(a);
+    end
+
+    C
+    width
+    if (length(C)>4 || not(width==160));
+      disp('8-bits image rectified and dithered with Bayer matrices');
       a=image_rectifier(a);
-      [hauteur, largeur, profondeur]=size(a);
+      [height, width, layers]=size(a);
     end
 
     if length(C)==1;
       disp('Empty image -> neutralization !');
-      a=zeros(hauteur, largeur);
+      a=zeros(height, width);
     end
 
-    if not(rem(hauteur,16)==0);##Fixing images not multiple of 16 pixels
+    if not(rem(height,16)==0);##Fixing images not multiple of 16 pixels
       disp('Image height is not a multiple of 16 : fixing image');
       C=unique(a);
-      new_lines=ceil(hauteur/16)*16-hauteur;
+      new_lines=ceil(height/16)*16-height;
       color_footer=double(C(end));
-      footer=color_footer.*ones(new_lines,largeur, profondeur);
+      footer=color_footer.*ones(new_lines,width, layers);
       a=[a;footer];
-      [hauteur, largeur, profondeur]=size(a);
+      [height, width, layers]=size(a);
     end
 
+    [height, width, layers]=size(a);
     C=unique(a);
     disp(['Buffering image ',currentfilename,' into GB tile data...'])
     switch length(C)
@@ -82,8 +93,8 @@
         White=C(2);
         end;
 
-        hor_tile=largeur/8;
-        vert_tile=hauteur/8;
+        hor_tile=width/8;
+        vert_tile=height/8;
         tile=0;
         H=1;
         L=1;
@@ -106,7 +117,8 @@
               O=[O,bin2dec(V1),bin2dec(V2)];
             end
             if tile==40
-              imshow(a)
+              imagesc(a)
+              colormap gray
               h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [1, 0, 0]);
               drawnow
               y_graph=y_graph+16;
@@ -116,23 +128,23 @@
               packets=packets+1;
               disp(['Buffering DATA packet#',num2str(packets)]);
               ##--------printing loop-----------------------------
-                            send_packet(INIT);
-                            pause(0.2);##skip the first packet without
-                            disp(['Sending DATA packet#',num2str(packets)]);
-                            send_packet(DATA_READY);
-                            send_packet(EMPT);##mandatory in the protocol
-                            send_packet(PRNT);
-                            for i=1:1:10
-                              pause(0.1);##Time for the printer head to print one line of 16 pixels
-                              send_packet(INQU);
-                            end
+              send_packet(INIT);
+              pause(0.2);##skip the first packet without
+              disp(['Sending DATA packet#',num2str(packets)]);
+              send_packet(DATA_READY);
+              send_packet(EMPT);##mandatory in the protocol
+              send_packet(PRNT);
+              for i=1:1:10
+                pause(0.1);##Time for the printer head to print one line of 16 pixels
+                send_packet(INQU);
+              end
               ##---------------------------------------------------
               O=[];
               tile=0;
             end
             L=L+8;
             L_tile=L_tile+1;
-            if L>=largeur
+            if L>=width
               L=1;
               L_tile=1;
               H=H+8;
@@ -142,22 +154,22 @@
         end
 
         packets=packets+3;
-        imshow(a)
+        imagesc(a)
         drawnow
         ##--------printing loop-----------------------------
-                send_packet(INIT);
-                pause(0.2);
-                send_packet(EMPT);##mandatory in the protocol
-                disp('Sending PRNT command with margin');
-                PRNT_INI(8)=margin; ##prepare PRINT command with margin
-                PRNT = add_checksum(PRNT_INI);
-                send_packet(PRNT);
-                for i=1:1:10*margin
-                  pause(0.1);##Time for the printer head to print one line of 16 pixels
-                  send_packet(INQU);
-                end
-                PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
-                PRNT = add_checksum(PRNT_INI);
+        send_packet(INIT);
+        pause(0.2);
+        send_packet(EMPT);##mandatory in the protocol
+        disp('Sending PRNT command with margin');
+        PRNT_INI(8)=margin; ##prepare PRINT command with margin
+        PRNT = add_checksum(PRNT_INI);
+        send_packet(PRNT);
+        for i=1:1:10*margin
+          pause(0.1);##Time for the printer head to print one line of 16 pixels
+          send_packet(INQU);
+        end
+        PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
+        PRNT = add_checksum(PRNT_INI);
         ##---------------------------------------------------
       end
 
