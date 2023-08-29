@@ -73,9 +73,12 @@
       case 3;
         Black=C(1);
         Dgray=C(2);
+        Lgray=[];
         White=C(3);
       case 2;
-        Black=C(1);
+        Black=C(1)
+        Dgray=[];
+        Lgray=[];
         White=C(2);
         end;
 
@@ -104,7 +107,7 @@
             end
             if tile==40
               imshow(a)
-              h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [0, 1, 0]);
+              h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [1, 0, 0]);
               drawnow
               y_graph=y_graph+16;
               ##printing appends here, packets are sent by groups of 40 tiles
@@ -113,16 +116,16 @@
               packets=packets+1;
               disp(['Buffering DATA packet#',num2str(packets)]);
               ##--------printing loop-----------------------------
-              send_packet(INIT);
-              pause(0.2);##skip the first packet without
-              disp(['Sending DATA packet#',num2str(packets)]);
-              send_packet(DATA_READY);
-              send_packet(EMPT);##mandatory in the protocol
-              send_packet(PRNT);
-              for i=1:1:10
-                pause(0.1);##Time for the printer head to print one line of 16 pixels
-                send_packet(INQU);
-              end
+                            send_packet(INIT);
+                            pause(0.2);##skip the first packet without
+                            disp(['Sending DATA packet#',num2str(packets)]);
+                            send_packet(DATA_READY);
+                            send_packet(EMPT);##mandatory in the protocol
+                            send_packet(PRNT);
+                            for i=1:1:10
+                              pause(0.1);##Time for the printer head to print one line of 16 pixels
+                              send_packet(INQU);
+                            end
               ##---------------------------------------------------
               O=[];
               tile=0;
@@ -142,19 +145,19 @@
         imshow(a)
         drawnow
         ##--------printing loop-----------------------------
-        send_packet(INIT);
-        pause(0.2);
-        send_packet(EMPT);##mandatory in the protocol
-        disp('Sending PRNT command with margin');
-        PRNT_INI(8)=margin; ##prepare PRINT command with margin
-        PRNT = add_checksum(PRNT_INI);
-        send_packet(PRNT);
-        for i=1:1:10*margin
-          pause(0.1);##Time for the printer head to print one line of 16 pixels
-          send_packet(INQU);
-        end
-        PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
-        PRNT = add_checksum(PRNT_INI);
+                send_packet(INIT);
+                pause(0.2);
+                send_packet(EMPT);##mandatory in the protocol
+                disp('Sending PRNT command with margin');
+                PRNT_INI(8)=margin; ##prepare PRINT command with margin
+                PRNT = add_checksum(PRNT_INI);
+                send_packet(PRNT);
+                for i=1:1:10*margin
+                  pause(0.1);##Time for the printer head to print one line of 16 pixels
+                  send_packet(INQU);
+                end
+                PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
+                PRNT = add_checksum(PRNT_INI);
         ##---------------------------------------------------
       end
 
