@@ -43,5 +43,6 @@ Do not trust the image which displays an Arduino Uno packed with wires as it is 
 
 ## Acknowledgements
 
-[Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
+- [Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
+- [Mraulio](https://github.com/Mraulio) for help and debugging
 
