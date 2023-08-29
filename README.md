@@ -38,7 +38,8 @@ Do not trust the image which displays an Arduino Uno packed with wires as it is 
 
 ## Known flaws
 
-This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy state from the printer and stuff packets by groups of 9 like the SD version. It does not all of that now (maybe one day).
+- This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy state from the printer and stuff packets by groups of 9 like the SD version. It does not all of that now (maybe one day).
+- Indexed images can be more or less supported (issue on the GNU Octave side).
 
 ## Acknowledgements
 
