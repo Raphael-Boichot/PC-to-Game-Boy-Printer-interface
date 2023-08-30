@@ -30,7 +30,7 @@ Well, this is as simple as it sounds:
 - Enjoy your washed-out pictures !
 - It does not work ? Inverse SIN and SOUT and check for some errors into Octave console, then retry !
 
-This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "damn lazy implementation"). I was validated on both Seiko and Hosiden printers.
+This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "laziest open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy serial library of GNU Octave, I cannot really do a more elaborated control of the printer.
 
 ## Example of fancy use
 
