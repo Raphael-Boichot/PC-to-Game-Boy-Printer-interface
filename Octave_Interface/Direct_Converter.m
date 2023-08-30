@@ -13,7 +13,6 @@
   ##-------------------------------------------------------------
   palette=0xE4;##any value is possible
   intensity=0x7F;##0x00->0x7F
-  margin=0x03; ##0 before margin, 3 after margins, used between images
   serial_port='COM8';##enter your COM port here
   margin=3;
   INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; ##INT command
