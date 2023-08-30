@@ -143,8 +143,8 @@
                             [keepalive, error]=send_packet(DATA_READY);
                             [keepalive, error]=send_packet(EMPT);##mandatory in the protocol
                             [keepalive, error]=send_packet(PRNT);
-                            for i=1:1:10
-                              pause(0.1);##Time for the printer head to print one line of 16 pixels
+                            for i=1:1:100
+                              pause(0.05);##Time for the printer head to print one line of 16 pixels
                               [keepalive, error]=send_packet(INQU);
                             end
                             pause(0.2);
@@ -174,8 +174,8 @@
                 PRNT_INI(8)=margin; ##prepare PRINT command with margin
                 PRNT = add_checksum(PRNT_INI);
                 [keepalive, error]=send_packet(PRNT);
-                for i=1:1:10*margin
-                  pause(0.1);##Time for the printer head to print one line of 16 pixels
+                for i=1:1:100*margin
+                  pause(0.05);##Time for the printer head to print one line of 16 pixels
                   [keepalive, error]=send_packet(INQU);
                 end
                 PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
