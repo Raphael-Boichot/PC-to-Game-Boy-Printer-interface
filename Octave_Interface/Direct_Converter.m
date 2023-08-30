@@ -13,6 +13,7 @@
   ##-------------------------------------------------------------
   palette=0xE4;##any value is possible
   intensity=0x7F;##0x00->0x7F
+  margin=0x03; ##0 before margin, 3 after margins, used between images
   serial_port='COM8';##enter your COM port here
   margin=3;
   INIT = [0x88 0x33 0x01 0x00 0x00 0x00 0x01 0x00 0x00 0x00]; ##INT command
@@ -48,7 +49,13 @@
     end
     C=unique(a);
 
-    if (length(C)<=4 && not(width==160));##dealine with pixel perfect upscaled/downscaled images
+    if (length(C)<=4 && height==160);##dealing with pixel perfect image, bad orientation
+      disp('Bad orientation, image rotated');
+      a=imrotate(a,270);
+      [heigth, width,layers]=size(a);
+    end
+
+    if (length(C)<=4 && not(width==160));##dealing with pixel perfect upscaled/downscaled images
       disp('Image is 2 bpp or less, which is good, but bad size: fixing it');
       a=imresize(a,160/width,"nearest");
       [heigth, width,layers]=size(a);
