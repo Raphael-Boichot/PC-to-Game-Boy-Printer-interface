@@ -33,30 +33,36 @@
 
   for k=1:1:nfiles
     currentfilename = imagefiles(k).name;
-    a=imread(['Images/',currentfilename]);
     disp(['Converting image ',currentfilename,' in progress...'])
+    [a,map]=imread(['Images/',currentfilename]);
+
+    if not(isempty(map));##dealing with indexed images
+      disp('Indexed image, converting to grayscale');
+      a=ind2gray(a,map);
+    end
 
     [height, width, layers]=size(a);
-    if layers>1
+    if layers>1##dealing with color images
+      disp('Color image, converting to grayscale');
       a=rgb2gray(a);
       [height, width, layers]=size(a);
     end
     C=unique(a);
 
-    if (length(C)<=4 && not(width==160));
+    if (length(C)<=4 && not(width==160));##dealine with pixel perfect upscaled/downscaled images
       disp('Image is 2 bpp or less, which is good, but bad size: fixing it');
       a=imresize(a,160/width,"nearest");
       [heigth, width,layers]=size(a);
     end
 
-    if (length(C)>4 || not(width==160));
+    if (length(C)>4 || not(width==160));##dealing with 8-bit images in general
       disp('8-bits image rectified and dithered with Bayer matrices');
       a=image_rectifier(a);
       [height, width, layers]=size(a);
     end
 
-    if length(C)==1;
-      disp('Empty image -> neutralization !');
+    if length(C)==1;##dealing with one color images
+      disp('Empty image -> neutralization, will print full white');
       a=zeros(height, width);
     end
 
@@ -74,17 +80,17 @@
     C=unique(a);
     disp(['Buffering image ',currentfilename,' into GB tile data...'])
     switch length(C)
-      case 4;
+      case 4;##4 colors, OK
         Black=C(1);
         Dgray=C(2);
         Lgray=C(3);
         White=C(4);
-      case 3;
+      case 3;##3 colors, sacrify LG (not well printed)
         Black=C(1);
         Dgray=C(2);
         Lgray=[];
         White=C(3);
-      case 2;
+      case 2;##2 colors, sacrify LG and DG
         Black=C(1)
         Dgray=[];
         Lgray=[];
@@ -120,23 +126,23 @@
               h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [1, 0, 0]);
               drawnow
               y_graph=y_graph+16;
-              ##printing appends here, packets are sent by groups of 40 tiles
               DATA_READY=[DATA,O];
               DATA_READY = add_checksum(DATA_READY);
               packets=packets+1;
+              ##printing appends here, packets are sent by groups of 40 tiles
               disp(['Buffering DATA packet#',num2str(packets)]);
               ##--------printing loop-----------------------------
-              send_packet(INIT);
-              pause(0.2);##skip the first packet without
-              disp(['Sending DATA packet#',num2str(packets)]);
-              send_packet(DATA_READY);
-              send_packet(EMPT);##mandatory in the protocol
-              send_packet(PRNT);
-              for i=1:1:10
-                pause(0.1);##Time for the printer head to print one line of 16 pixels
-                send_packet(INQU);
-              end
-              pause(0.2);
+                            send_packet(INIT);
+                            pause(0.2);##skip the first packet without
+                            disp(['Sending DATA packet#',num2str(packets)]);
+                            send_packet(DATA_READY);
+                            send_packet(EMPT);##mandatory in the protocol
+                            send_packet(PRNT);
+                            for i=1:1:10
+                              pause(0.1);##Time for the printer head to print one line of 16 pixels
+                              send_packet(INQU);
+                            end
+                            pause(0.2);
               ##---------------------------------------------------
               O=[];
               tile=0;
@@ -156,20 +162,20 @@
         imagesc(a)
         drawnow
         ##--------printing loop-----------------------------
-        send_packet(INIT);
-        pause(0.2);
-        send_packet(EMPT);##mandatory in the protocol
-        disp('Sending PRNT command with margin');
-        PRNT_INI(8)=margin; ##prepare PRINT command with margin
-        PRNT = add_checksum(PRNT_INI);
-        send_packet(PRNT);
-        for i=1:1:10*margin
-          pause(0.1);##Time for the printer head to print one line of 16 pixels
-          send_packet(INQU);
-        end
-        PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
-        PRNT = add_checksum(PRNT_INI);
-        pause(0.2);
+                send_packet(INIT);
+                pause(0.2);
+                send_packet(EMPT);##mandatory in the protocol
+                disp('Sending PRNT command with margin');
+                PRNT_INI(8)=margin; ##prepare PRINT command with margin
+                PRNT = add_checksum(PRNT_INI);
+                send_packet(PRNT);
+                for i=1:1:10*margin
+                  pause(0.1);##Time for the printer head to print one line of 16 pixels
+                  send_packet(INQU);
+                end
+                PRNT_INI(8)=0x00; ##restore PRINT command without margin for next image
+                PRNT = add_checksum(PRNT_INI);
+                pause(0.2);
         ##---------------------------------------------------
       end
 
