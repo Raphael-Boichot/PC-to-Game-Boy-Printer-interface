@@ -36,7 +36,7 @@ This code prints one packet after the other and uses a fixed timer intervall inb
 
 ![Fancy use](Pictures/Setup.jpg)
 
-Do not fear to jump into the project due to this image of an Arduino Uno packed with wires. The device shown here is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described.
+Do not fear to jump into the project due to this image of an Arduino Uno packed with wires. The device shown here is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described (3 wires + ground).
 
 ## Funfact
 
