@@ -23,7 +23,7 @@
   ##--------------------------------------------------------------
   PRNT = add_checksum(PRNT_INI);
   global arduinoObj
-  arduinoObj = serialport(serial_port,'baudrate',115200,'parity','none','timeout',255); %set the Arduino com port here
+  arduinoObj = serialport(serial_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
 
   packets=0;
   DATA_BUFFER=[];
