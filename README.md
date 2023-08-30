@@ -28,9 +28,9 @@ Well, this is as simple as it sounds:
 - Connect the Game Boy Printer to the Arduino and the Arduino to the PC. Nothing indicates if wiring is OK, trust yourself;
 - Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/e13f0a8247043a577f75674304a3ea3e64e7e601/Octave_Interface/Direct_Converter.m#L10) and run the code from the GNU Octave Launcher;
 - Enjoy your washed-out pictures !
-- It does not work ? Inverse SIN and SOUT and check for some error on serial in Octave console then retry !
+- It does not work ? Inverse SIN and SOUT and check for some errors into Octave console, then retry !
 
-This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (on purpose).
+This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "damn lazy implementation").
 
 ## Example of fancy use
 
