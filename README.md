@@ -30,16 +30,13 @@ Well, this is as simple as it sounds:
 - Enjoy your washed-out pictures !
 - It does not work ? Inverse SIN and SOUT and check for some error on serial in Octave console then retry !
 
+This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (on purpose).
+
 ## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
 
 Do not trust the image which displays an Arduino Uno packed with wires as it is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described.
-
-## Known flaws
-
-- This code prints one packet after the other and uses a fixed timer inbetween packets to let time to the printer to print. It could use a detection from busy state from the printer and stuff packets by groups of 9 like the SD version. It does not all of that now (maybe one day).
-- Indexed images can be more or less supported (issue on the GNU Octave side).
 
 ## Acknowledgements
 
