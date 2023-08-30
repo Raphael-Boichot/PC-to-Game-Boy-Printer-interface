@@ -38,6 +38,10 @@ This code prints one packet after the other and uses a fixed timer intervall inb
 
 Do not trust the image which displays an Arduino Uno packed with wires as it is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described.
 
+## Funfact
+
+This code is compatible with all the printer emulators I know. This has strictly no interest apart from debugging the project without using batteries and paper.
+
 ## Acknowledgements
 
 - [Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
