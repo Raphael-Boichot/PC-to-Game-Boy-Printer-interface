@@ -24,7 +24,7 @@ void setup() {
   pinMode(RX, INPUT_PULLUP);
   digitalWrite(clk, HIGH);
   digitalWrite(TX, LOW);
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Waiting for data");
 }
 
