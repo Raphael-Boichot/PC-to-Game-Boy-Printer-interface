@@ -23,10 +23,10 @@ The pinout uses only 4 wires, so it's very easy to make ! Why not hooking SOUT t
 Well, this is as simple as it sounds:
 - Install the [Arduino IDE](https://www.arduino.cc/en/software) and [GNU Octave](https://octave.org/);
 - Clone the repo locally;
-- Flash the [Arduino code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Arduino_interface/Arduino_interface.ino) to your Arduino Uno;
+- Flash the [Arduino code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Arduino_interface/Arduino_interface.ino) to your Arduino Uno. Change the pinout if necessary;
 - Drop some images, **any size, any number of colors, png format**, in the [image folder](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Octave_Interface/Images). 1x screenshots, 4 colors, made from emulators and images from Game Boy Camera fit perfectly the native printer resolution but are not mandatory. Other formats will be reduced to 160x(16xX), 2 bits per pixel images, Bayer dithering (like the Game Boy Camera);
 - Connect the Game Boy Printer to the Arduino and the Arduino to the PC. Nothing indicates if wiring is OK, trust yourself;
-- Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/e13f0a8247043a577f75674304a3ea3e64e7e601/Octave_Interface/Direct_Converter.m#L10) and run the code from the GNU Octave Launcher;
+- Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/e13f0a8247043a577f75674304a3ea3e64e7e601/Octave_Interface/Direct_Converter.m#L10) and run the code from the GNU Octave Launcher. You must see some flashes of the onboard LEDs if it's working;
 - Enjoy your washed-out pictures !
 - It does not work ? Inverse SIN and SOUT and check for some errors into Octave console, then retry !
 
