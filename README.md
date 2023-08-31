@@ -30,13 +30,13 @@ Well, this is as simple as it sounds:
 - Enjoy your washed-out pictures !
 - It does not work ? Inverse SIN and SOUT and check for some errors into Octave console, then retry !
 
-This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "laziest open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading a lot the transmission rate.
+This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "laziest open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading dramatically the transmission rate.
 
 ## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
 
-Do not fear to jump into the project due to this image of an Arduino Uno packed with wires. The device shown here is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described (3 wires + ground).
+Do not fear to jump into the project due to this image of an Arduino Uno packed with messy wires. The device shown here is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described (3 wires + ground).
 
 ## Funfact
 
