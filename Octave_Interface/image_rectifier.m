@@ -30,6 +30,7 @@ function [image_rectified]=image_rectifier(image_non_rectified)
     end
   end
 
+  ##Bayer dithering (what a Game Boy Camera does)
   Bayer_matDG_B=[];
   Bayer_matLG_DG=[];
   Bayer_matW_LG=[];
