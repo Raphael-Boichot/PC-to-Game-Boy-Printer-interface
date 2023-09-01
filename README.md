@@ -38,6 +38,10 @@ This code prints one packet after the other and uses a fixed timer intervall inb
 
 Do not fear to jump into the project due to this image of an Arduino Uno packed with messy wires. The device shown here is also used for [this project](https://github.com/Raphael-Boichot/Play-with-the-Game-Boy-Camera-Mitsubishi-M64282FP-sensor) or [this other project](https://github.com/Raphael-Boichot/A-penultimate-Arduino-DHT22-recorder), the pinout is really as simple as described (3 wires + ground).
 
+## Have you run out of paper ?
+
+The repo also comes with a [fake printer](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Research/The%20Fake%20Printer) that allows you to generate completely fake thermal prints having exactly the aspect of what a Game Boy Printer could produce. No batteries needed ! 
+
 ## Funfact
 
 This code is compatible with all the printer emulators I know. This has strictly no interest apart from debugging the project without using batteries and paper.
