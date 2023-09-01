@@ -28,7 +28,7 @@ Well, this is as simple as it sounds:
 - Connect the Game Boy Printer to the Arduino and the Arduino to the PC. Nothing indicates if wiring is OK, trust yourself;
 - Open [the Octave code](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/main/Octave_Interface/Direct_Converter.m), select the [COM port corresponding to your Arduino board](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/blob/e13f0a8247043a577f75674304a3ea3e64e7e601/Octave_Interface/Direct_Converter.m#L10) and run the code from the GNU Octave Launcher. You must see some flashes of the onboard LEDs if it's working;
 - Enjoy your washed-out pictures !
-- It does not work ? Inverse SIN and SOUT and check for some errors into Octave console, then retry !
+- The Arduino onboard LEDs blink and it does not print ? Inverse SIN and SOUT, then retry !
 
 This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "laziest open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading dramatically the transmission rate.
 
