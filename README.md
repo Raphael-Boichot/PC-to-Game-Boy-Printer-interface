@@ -32,7 +32,7 @@ Well, this is as simple as it sounds:
 
 This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "laziest open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading dramatically the transmission rate.
 
-## Example of fancy use
+## Example of fancy use: printing emulator screenshots
 
 ![Fancy use](Pictures/Setup.jpg)
 
