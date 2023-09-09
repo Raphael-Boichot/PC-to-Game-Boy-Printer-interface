@@ -30,15 +30,15 @@ Well, this is as simple as it sounds:
 - Enjoy your washed-out pictures !
 - The Arduino onboard LEDs blink and it does not print ? Inverse SIN and SOUT, then retry !
 
-This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "lazy open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading dramatically the transmission rate.
-
 ## The lazy protocol used here
+
+This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "lazy open loop implementation"). It was validated on both Seiko and Hosiden printers. Due to the quite sketchy implementation of the serial library of GNU Octave, I cannot really do a more elaborated control of the printer like a feedback loop with error codes, without degrading dramatically the transmission rate.
 
 ![Protocol](Pictures/Protocol.png)
 
-## Example of fancy use: printing emulator screenshots
+Due to timing inconsistencies with GNU Octave, I also loose easily the synchronization if I send the packets 9 by 9 (maximum possible), so I have to constantly restart protocol from scratch (INIT command) as often as possible. It has hopefully no adverse effect on printing quality and minor effect on printing velocity.
 
-Due to timing inconsistencies with GNU Octave, I lost easily the synchronization, so I had to constantly restart protocol from scratch (INIT command) as often as possible. It has hopefully no adverse effect on printing quality.
+## Example of fancy use: printing emulator screenshots
 
 ![Fancy use](Pictures/Setup.jpg)
 
