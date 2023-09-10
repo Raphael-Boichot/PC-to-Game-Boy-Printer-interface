@@ -1,6 +1,6 @@
 # A simple PC to Game Boy Printer interface with an Arduino
 
-The most cheap and basic setup you can imagine to print something from a PC to a Game Boy Printer ! The Arduino code is the same used in the [GBCamera-Android-Manager](https://github.com/Raphael-Boichot/GBCamera-Android-Manager). The code originates from an [SD based version](https://github.com/Raphael-Boichot/The-Arduino-SD-Game-Boy-Printer) which is technically more advanced but requires and SD shield. The project here requires nothing but an Arduino Uno.
+The most cheap and basic setup you can imagine to print something from a PC to a Game Boy Printer ! The Arduino code is the same used in the [GBCamera-Android-Manager](https://github.com/Raphael-Boichot/GBCamera-Android-Manager). The code originates from an [SD based version](https://github.com/Raphael-Boichot/The-Arduino-SD-Game-Boy-Printer) which is technically more advanced and accurate but requires and SD shield. The project here requires nothing but an Arduino Uno and a PC.
 
 Here GNU Octave is used to encode images into Game Boy Tile Format, make legit printer packets with correct checksums and send them to the serial port in correct order. The Arduino acts as a luxury level shifter. It turns the asynchronous serial data sent to the Arduino into an SPI protocol compatible with the printer, in particular regarding timings and synchronous communication. 
 
@@ -36,7 +36,7 @@ This code prints one packet after the other and uses a fixed timer intervall inb
 
 ![Protocol](Pictures/Protocol.png)
 
-Due to timing inconsistencies with GNU Octave, I also loose easily the synchronization if I send the packets 9 by 9 (maximum possible), so I have to constantly restart protocol from scratch (INIT command) as often as possible. It has hopefully no adverse effect on printing quality and minor effect on printing velocity.
+Due to additionnal timing inconsistencies, I also loose randomly the synchronization if I send the packets 9 by 9 (maximum possible), so I have to constantly restart protocol from scratch (INIT command) as often as possible. It has hopefully no adverse effect on printing quality and minor effect on printing velocity.
 
 ## Example of fancy use: printing emulator screenshots
 
