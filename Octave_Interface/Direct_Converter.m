@@ -25,7 +25,7 @@
   PRNT = add_checksum(PRNT_INI);
   global arduinoObj
   arduinoObj = serialport(serial_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
-
+  pause(2.5);##allows the Arduino to reboot before sending data
   packets=0;
   DATA_BUFFER=[];
   imagefiles = dir('Images/*.png');## the default format is png, other are ignored
