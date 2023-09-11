@@ -37,7 +37,7 @@ This code prints one packet after the other and uses a fixed timer intervall inb
 
 ![Protocol](Pictures/Protocol.png)
 
-Due to some timing inconsistencies, I loose randomly the synchronization if I send the packets 9 by 9 (maximum possible), so I have to constantly restart protocol from scratch (INIT command) as often as possible. It has hopefully no adverse effect on printing quality and minor effect on printing velocity.
+Due to some timing inconsistencies, I loose randomly the synchronization if I send the packets 9 by 9 (maximum possible), so I have to restart protocol from scratch (INIT command) at each data packet. It has hopefully no adverse effect on printing quality and very minor effect on printing velocity.
 
 ## Example of fancy use: printing emulator screenshots
 
