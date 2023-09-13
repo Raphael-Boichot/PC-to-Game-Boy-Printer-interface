@@ -4,7 +4,7 @@ this code allows interfacing any program with a Pocket Printer via serial port
 One byte must be sent to the printer via serial, then one byte must be read on the serial, and so on. The read/write sequence allows a control of the flow
 
 The general protocol to use this code is like this: 
-- send an INIT command (it's shelf life is infinite)
+- send an INIT command (its shelf life is at least 10 seconds)
 - Wait 200 ms
 - send DATA packets
 - send an empty DATA packets (no payload)
