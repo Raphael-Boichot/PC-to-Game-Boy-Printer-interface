@@ -16,7 +16,7 @@ char byte_read;
 bool bit_sent, bit_read;
 int clk = 2;   // clock signal
 int TX = 3;    // The data signal coming from the Arduino and goind to the printer (Sout on Arduino becomes Sin on the printer)
-int RX = 5;    // The response bytes coming from printer going to Arduino (Sout from printer becomes Sin on the Arduino)
+int RX = 4;    // The response bytes coming from printer going to Arduino (Sout from printer becomes Sin on the Arduino)
 int LED = 13;  //to indicate a printer ready state
 //invert TX/RX if it does not work, assuming that everything else is OK
 void setup() {
