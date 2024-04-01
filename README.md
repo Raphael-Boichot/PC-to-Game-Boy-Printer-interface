@@ -23,7 +23,7 @@ The pinout uses only 4 wires, so it's very easy to make ! It must even work with
 
 ## Dedicated PCB
 
-!{](https://github.com/Raphael-Boichot/Collection-of-PCB-for-Game-Boy-Printer-Emulators/blob/main/PCB_Arduino_Uno/Arduino_shield.jpg)
+![](https://github.com/Raphael-Boichot/Collection-of-PCB-for-Game-Boy-Printer-Emulators/blob/main/PCB_Arduino_Uno/Arduino_shield.jpg)
 
 If you want something neat, you can follow the [instructions given here](https://github.com/Raphael-Boichot/Collection-of-PCB-for-Game-Boy-Printer-Emulators?tab=readme-ov-file) to build a dedicated PCB
 
