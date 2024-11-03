@@ -4,6 +4,7 @@
 % image must be 4 colors maximum, which is the native output format
 clear
 clc
+close all
 
 disp('-----------------------------------------------------------')
 disp('|Beware, this code is for GNU Octave ONLY !!!             |')
@@ -12,8 +13,6 @@ disp('-----------------------------------------------------------')
 paper_color=6; %6=random, 5=purple, 4=pink, 3=regular blue, 2=regular yellow or 1=regular white
 darkness=8; %1=lightest 10=darkest
 scale_percentage=30; %100=full size, smaller values scale down image
-
-%watermarking='Raphael BOICHOT 2021';
 
 try
   pkg load image % for compatibility with Octave
