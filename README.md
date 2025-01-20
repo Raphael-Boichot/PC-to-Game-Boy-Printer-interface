@@ -53,6 +53,10 @@ Due to some timing inconsistencies, I sometimes loose randomly the synchronizati
 
 ![Fancy use](Pictures/Setup.jpg)
 
+## Have you run out of paper ?
+
+The repo also comes with a [fake printer](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Research/The%20Fake%20Printer) that allows you to generate completely fake thermal prints having exactly the aspect of what a Game Boy Printer could produce. No batteries or thermal paper required ! 
+
 ## Funfact
 
 The printer code is compatible with printer emulators like the BitBoy, The [Arduino Game Boy Printer Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) or the [NeoGB Printer](https://github.com/zenaro147/NeoGB-Printer). This has strictly no interest apart from debugging the project without using batteries and paper.
