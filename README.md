@@ -50,6 +50,7 @@ Due to some timing inconsistencies, I sometimes loose randomly the synchronizati
 ## Example of fancy use: printing emulator screenshots
 
 ![Fancy use](Pictures/Setup.jpg)
+(Do not mind the mess of wires, it's just a prototyping board also used for other projects)
 
 ## Have you run out of paper ?
 
