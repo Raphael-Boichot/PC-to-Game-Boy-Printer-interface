@@ -2,9 +2,7 @@
 
 The most cheap and basic setup you can imagine to print something from a PC to a Game Boy Printer ! The Arduino code is the same used in the [GBCamera-Android-Manager](https://github.com/Raphael-Boichot/GBCamera-Android-Manager). The code originates from an [SD based version](https://github.com/Raphael-Boichot/The-Arduino-SD-Game-Boy-Printer) which is more stable and time accurate but requires an SD shield. The project here requires nothing but an Arduino Uno and a PC.
 
-This project was recently converted to a much intuitive Python version with a very fancy PCB variation by [AKABigDinner](https://github.com/AKABigDinner/PC-to-GameBoy-Printer-Python).
-
-Alternatively, you can directly use the [Game Boy printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), it is compatible ! Just connect the serial cable with printer ON, boot the Arduino and it will recognize the printer with exactly the same hardware setting ! For the story, it contains the small Arduino core proposed here wrapped with a printer detection routine. The code first pings for a printer before switching to its normal emulator mode.
+Alternatively, instead of the Arduino core provided here, you can directly use the [Game Boy printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), it is natively compatible with the GNU Octave script ! Just connect the serial cable with printer ON, boot the Arduino and it will recognize the printer with exactly the same hardware setting ! For the story, it contains the small Arduino core proposed here wrapped with a printer detection routine. The code first pings for a printer before switching to its normal emulator mode.
 
 Here GNU Octave is used to encode images into Game Boy Tile Format, make legit printer packets with correct checksums and send them to the serial port in correct order. The Arduino acts as a luxury level shifter. It turns the asynchronous serial data sent to the Arduino into an SPI protocol compatible with the printer, in particular regarding timings and synchronous communication. 
 
@@ -59,7 +57,8 @@ The repo also comes with a [fake printer](https://github.com/Raphael-Boichot/PC-
 
 ## Funfact
 
-The printer code is compatible with printer emulators like the BitBoy, The [Arduino Game Boy Printer Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) or the [NeoGB Printer](https://github.com/zenaro147/NeoGB-Printer). This has strictly no interest apart from debugging the project without using batteries and paper.
+- The printer code is compatible with printer emulators like the BitBoy, The [Arduino Game Boy Printer Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) or the [NeoGB Printer](https://github.com/zenaro147/NeoGB-Printer). This has strictly no interest apart from debugging the project without using batteries and paper.
+- The Arduino core (along with the GNU Octave script) is directly compatible with RP2040 boards if you compile it with the [Raspberry Pi Pico Arduino core for RP2040](https://github.com/earlephilhower/arduino-pico).
 
 ## Acknowledgements
 
