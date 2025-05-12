@@ -10,7 +10,7 @@ Here GNU Octave is used to encode images into Game Boy Tile Format, make legit p
 
 ## Parts needed
 
-- An [Arduino Uno](https://fr.aliexpress.com/item/32848546164.html);
+- An [Arduino Uno](https://www.aliexpress.com/item/1005002997846504.html);
 - The [cheapest Game Boy serial cable you can find](https://fr.aliexpress.com/item/32698407220.html) as you will cut it. **Important note:** SIN and SOUT are crossed internally so never trust what wires you get. Use a multimeter to identify wires. Cross SIN and SOUT if the device does not work at the end;
 - If you want something working first try, you can use a [serial port breakout board](https://github.com/Palmr/gb-link-cable) instead of cutting/soldering a cable.
 - If you want something blinking, you can wire an aditionnal fancy LED to D13 with a 200-1000 Ohm resistor in series.
