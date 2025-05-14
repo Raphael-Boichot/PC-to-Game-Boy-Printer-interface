@@ -152,7 +152,7 @@ if protocol_failure==0
                     colormap gray
                     h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',1,'FaceColor', [1, 0, 0]);
                     drawnow
-                    y_graph=y_graph+12;
+                    y_graph=y_graph+16;
                     DATA_READY=[DATA,O];
                     DATA_READY = add_checksum(DATA_READY);
                     packets=packets+1;
