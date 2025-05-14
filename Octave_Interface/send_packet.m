@@ -1,6 +1,7 @@
-function []=send_packet(packet_TX)
+function [response_packet]=send_packet(packet_TX)
 global arduinoObj
 for i=1:1:length(packet_TX)
-    fwrite(arduinoObj,packet_TX(i),"uint8");
-    fread(arduinoObj,1,"uint8");
+    fwrite(arduinoObj,packet_TX(i));
+    response_packet(i)=fread(arduinoObj,1);
 end
+%disp(strjoin(cellstr(num2hex(response_packet))', ' '))

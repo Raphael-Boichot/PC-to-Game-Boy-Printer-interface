@@ -150,9 +150,9 @@ if protocol_failure==0
                 if tile==40
                     imshow(a)
                     colormap gray
-                    h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',3,'FaceColor', [1, 0, 0]);
+                    h=rectangle('Position',[1 y_graph 160-1 16],'EdgeColor','r', 'LineWidth',1,'FaceColor', [1, 0, 0]);
                     drawnow
-                    y_graph=y_graph+16;
+                    y_graph=y_graph+12;
                     DATA_READY=[DATA,O];
                     DATA_READY = add_checksum(DATA_READY);
                     packets=packets+1;
@@ -165,9 +165,10 @@ if protocol_failure==0
                     send_packet(DATA_READY);
                     send_packet(EMPT);%mandatory in the protocol
                     send_packet(PRNT);
-                    for i=1:1:10
+                    for i=1:1:13
                         pause(0.1);%Time for the printer head to print one line of 16 pixels
-                        send_packet(INQU);
+                        [response_packet]=send_packet(INQU);
+                        disp(strjoin(cellstr(num2hex(response_packet))', ' '))
                     end
                     pause(0.2);
                     %---------------------------------------------------
@@ -196,9 +197,10 @@ if protocol_failure==0
         PRNT_INI(8)=margin; %prepare PRINT command with margin
         PRNT = add_checksum(PRNT_INI);
         send_packet(PRNT);
-        for i=1:1:10*margin
+        for i=1:1:13*margin
             pause(0.1);%Time for the printer head to print one line of 16 pixels
-            send_packet(INQU);
+            [response_packet]=send_packet(INQU);
+            disp(strjoin(cellstr(num2hex(response_packet))', ' '))
         end
         PRNT_INI(8)=0x00; %restore PRINT command without margin for next image
         PRNT = add_checksum(PRNT_INI);
