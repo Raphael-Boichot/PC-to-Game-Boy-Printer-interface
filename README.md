@@ -39,13 +39,13 @@ Well, this is as simple as it sounds:
 - Enjoy your washed-out pictures !
 - The Arduino onboard LEDs blink and it does not print ? Inverse physically SIN and SOUT, then retry !
 
-## The lazy protocol used here
+## The protocol used here
 
-This code prints one packet after the other and uses a fixed timer intervall inbetween packets to let time to the printer to print (while sending inquiry packets to occupy the printer). This is the most basic printer protocol implementation possible (aka "lazy open loop implementation"). It was validated on both Seiko and Hosiden printers.
+This code prints packets by batches of 9 if possible, using double speed mode and applying flux control during printing time by inquiring the printer. It works basically like any printer compatible Game Boy game. It cannot be faster than that.
 
 ![Protocol](Pictures/Protocol.png)
 
-Due to some timing inconsistencies, I sometimes loose randomly the synchronization if I send the packets 9 by 9 (maximum possible), so I have to restart protocol from scratch (INIT command) at each data packet. It has hopefully no adverse effect on printing quality and very minor effect on printing velocity.
+The repo also contains the first version of code which printed packets one by one without flux control, for history (it works of course). At that time I basically didn't know what I was doing due to peculiar way of GNU Octave to handle the serial protocol.
 
 ## Example of fancy use: printing emulator screenshots
 
