@@ -1,6 +1,6 @@
 # A simple PC to Game Boy Printer interface with an Arduino
 
-The most cheap and basic setup you can imagine to print something from a PC to a Game Boy Printer ! The Arduino code is the same used in the [GBCamera-Android-Manager](https://github.com/Raphael-Boichot/GBCamera-Android-Manager). The code originates from an [SD based version](https://github.com/Raphael-Boichot/The-Arduino-SD-Game-Boy-Printer) which is more stable and time accurate but requires an SD shield. The project here requires nothing but an Arduino Uno and a PC.
+The most cheap and basic setup you can imagine to print something from a PC to a Game Boy Printer ! The Arduino code is the same used in the [GBCamera-Android-Manager](https://github.com/Raphael-Boichot/GBCamera-Android-Manager). The code originates from an [SD based version](https://github.com/Raphael-Boichot/The-Arduino-SD-Game-Boy-Printer) which requires an SD shield. The project here requires nothing but an Arduino Uno and a PC.
 
 Alternatively, instead of the Arduino core provided here, you can directly use the [Game Boy printer emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator), it is natively compatible with the GNU Octave script ! Just connect the serial cable with printer ON, boot the Arduino and it will recognize the printer with exactly the same hardware setting ! For the story, it contains the small Arduino core proposed here wrapped with a printer detection routine. The code first pings for a printer before switching to its normal emulator mode.
 
