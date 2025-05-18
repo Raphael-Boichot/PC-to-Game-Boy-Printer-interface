@@ -48,7 +48,7 @@ end
 if protocol_failure==0
     arduinoObj = serialport(valid_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
     pause(2.5);% allows the Arduino to reboot before sending data
-    fread(arduinoObj,8);%partially clears the port from some buffered shit, flush command does not work here, no idea why
+    response=fread(arduinoObj,8);%partially clears the port from some buffered shit, flush command does not work here, no idea why
     %looks like the way GNU Octave handles the serial port has some undocumented behavior (or could be on Arduino side)
     %fread(arduinoObj,8) does not completely clear the port, but clearing it jammed the protocol as well as flush(arduinoObj)
     %to be debugged later maybe, it makes no sense to me
@@ -196,11 +196,13 @@ if protocol_failure==0
                             PRNT = add_checksum(PRNT_INI);
                         end
                         pause(0.5);%time for the printer head to fire
-                        [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
-                        disp(strjoin(cellstr(num2hex(response_packet))', ' '))
-                        [response_packet]=send_packet(INQU);%second response is always 0x06 if busy, keep it to enter the loop
-                        disp(strjoin(cellstr(num2hex(response_packet))', ' '))
-                        while response_packet(10)==0x06%while printer is busy printing...
+                        [response_packet]=send_packet(INQU);
+                        while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
+                            pause(0.5);
+                            [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
+                            disp(strjoin(cellstr(num2hex(response_packet))', ' '))
+                        end
+                        while ismember(0x06, response_packet)%while printer is busy printing...
                             pause(0.5);
                             [response_packet]=send_packet(INQU);
                             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
@@ -236,11 +238,13 @@ if protocol_failure==0
             PRNT = add_checksum(PRNT_INI);
             send_packet(PRNT);
             pause(0.5);%time for the printer head to fire
-            [response_packet]=send_packet(INQU);%first response is always 0x08 for obscure reason linked to Octave, flushing it
-            disp(strjoin(cellstr(num2hex(response_packet))', ' '))
-            [response_packet]=send_packet(INQU);%second response is always 0x06, keep it to enter the loop
-            disp(strjoin(cellstr(num2hex(response_packet))', ' '))
-            while response_packet(10)==0x06%while printer is busy printing...
+            [response_packet]=send_packet(INQU);
+            while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
+                pause(0.5);
+                [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
+                disp(strjoin(cellstr(num2hex(response_packet))', ' '))
+            end
+            while ismember(0x06, response_packet)%while printer is busy printing...
                 pause(0.5);
                 [response_packet]=send_packet(INQU);
                 disp(strjoin(cellstr(num2hex(response_packet))', ' '))
