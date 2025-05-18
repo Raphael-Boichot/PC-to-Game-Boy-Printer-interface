@@ -1,5 +1,6 @@
 %PC to Game Boy printer, Raphael BOICHOT 2023/08/26
-%this must be run with GNU Octave
+%revised in may 2025 to add flux control for fun
+%this must be run with GNU Octave, feel free to adapt the code to Matlab as it is not natively compatible
 %just run this script with images into the folder "Images"
 clc;
 clear;
@@ -35,7 +36,7 @@ for i =1:1:length(list)
     response=char(read(s, 100));
     if ~isempty(response)
         if strcmp(response(1:7),'Waiting')
-            disp(['Arduino detected on port ',char(list(i))])%last char is ACK
+            disp(['Arduino detected on port ',char(list(i))])
             valid_port=char(list(i));
             beep ()
             protocol_failure=0;
@@ -50,7 +51,11 @@ if protocol_failure==0
     fread(arduinoObj,8);%clear the port from some buffered shit, flush command does not work here, no idea why
     packets=0;
     DATA_BUFFER=[];
-    imagefiles = dir('Images/*.png');% the default format is png, other are ignored
+    imagefiles_png = dir('Images/*.png');
+    imagefiles_jpg = dir('Images/*.jpg');
+    imagefiles_jpeg = dir('Images/*.jpeg');
+    imagefiles_bmp = dir('Images/*.bmp');
+    imagefiles = [imagefiles_png; imagefiles_jpg; imagefiles_jpeg; imagefiles_bmp];
     nfiles = length(imagefiles);     % Number of files found
 
     for k=1:1:nfiles
@@ -139,14 +144,21 @@ if protocol_failure==0
             for y=1:1:vert_tile
                 tile=tile+1;
                 b=a((H:H+7),(L:L+7));
-                for i=1:8
-                    for j=1:8
-                        if b(i,j)==Lgray;  V1(j)=('1'); V2(j)=('0');end
-                        if b(i,j)==Dgray;  V1(j)=('0'); V2(j)=('1');end
-                        if b(i,j)==White;  V1(j)=('0'); V2(j)=('0');end
-                        if b(i,j)==Black;  V1(j)=('1'); V2(j)=('1');end
+                for i = 1:8
+                    V1 = repmat('0', 1, 8);  % Initialize binary string V1
+                    V2 = repmat('0', 1, 8);  % Initialize binary string V2
+                    for j = 1:8
+                        if b(i,j) == Lgray
+                            V1(j) = '1'; V2(j) = '0';
+                        elseif b(i,j) == Dgray
+                            V1(j) = '0'; V2(j) = '1';
+                        elseif b(i,j) == White
+                            V1(j) = '0'; V2(j) = '0';
+                        elseif b(i,j) == Black
+                            V1(j) = '1'; V2(j) = '1';
+                        end
                     end
-                    O=[O,bin2dec(V1),bin2dec(V2)];
+                    O = [O, bin2dec(V1), bin2dec(V2)];
                 end
                 if tile==40
                     imshow(a)
@@ -161,31 +173,29 @@ if protocol_failure==0
                     disp(['Buffering DATA packet#',num2str(packets)]);
                     DATA_packets_to_print(packets,:)=DATA_READY;
                     if packets==9%memory full
-                        %--------printing loop-----------------------------
+                        %--------printing loop within an image if it has 9 packets or more-----------
                         send_packet(INIT);
-                        pause(0.2);%skip the first packet without
+                        pause(0.2);%skips the first packet without
                         disp(['Sending ',num2str(packets),' DATA packet',]);
                         for i=1:1:packets
                             send_packet(DATA_packets_to_print(i,:));
                         end
                         send_packet(EMPT);%mandatory in the protocol
-                        if y_graph<height
+                        if y_graph<height%end of image not detected, print without margin
                             disp('Sending PRINT command with no margin');
                             send_packet(PRNT);
-                            margin_timer=0;
-                        else %end of image detected
+                        else %end of image detected, print with margin
                             disp('Sending PRINT command with margin');
                             PRNT_INI(8)=margin; %prepare PRINT command with margin
                             PRNT = add_checksum(PRNT_INI);
                             send_packet(PRNT);
                             PRNT_INI(8)=0x00; %restore PRINT command without margin for next image
                             PRNT = add_checksum(PRNT_INI);
-                            margin_timer=3;
                         end
                         pause(0.5);%time for the printer head to fire
-                        [response_packet]=send_packet(INQU);%first response is always 0x08, flushing it
+                        [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
                         disp(strjoin(cellstr(num2hex(response_packet))', ' '))
-                        [response_packet]=send_packet(INQU);%second response is always 0x06, keep it to enter the loop
+                        [response_packet]=send_packet(INQU);%second response is always 0x06 if busy, keep it to enter the loop
                         disp(strjoin(cellstr(num2hex(response_packet))', ' '))
                         while response_packet(10)==0x06%while printer is busy printing...
                             pause(0.5);
@@ -193,7 +203,7 @@ if protocol_failure==0
                             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
                         end
                         packets=0;
-                        %---------------------------------------------------
+                        %--------printing loop within an image if it has 9 packets or more-----------
                     end
                     O=[];
                     tile=0;
@@ -211,20 +221,19 @@ if protocol_failure==0
 
         imshow(a)
         drawnow
-        %%--------printing loop-----------------------------
+        %%--------printing loop to flush last packets at the end of an image----------------
         if packets>0
             disp(['Sending ',num2str(packets),' DATA packet',]);
             for i=1:1:packets
                 send_packet(DATA_packets_to_print(i,:));
             end
-            margin_timer=3;
             send_packet(EMPT);%mandatory in the protocol
             disp('Sending PRINT command with margin');
-            PRNT_INI(8)=margin; %prepare PRINT command with margin
+            PRNT_INI(8)=margin; %prepare PRINT command with margin, always, as it is the end of an image
             PRNT = add_checksum(PRNT_INI);
             send_packet(PRNT);
             pause(0.5);%time for the printer head to fire
-            [response_packet]=send_packet(INQU);%first response is always 0x08, flushing it
+            [response_packet]=send_packet(INQU);%first response is always 0x08 for obscure reason linked to Octave, flushing it
             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
             [response_packet]=send_packet(INQU);%second response is always 0x06, keep it to enter the loop
             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
@@ -237,7 +246,7 @@ if protocol_failure==0
             PRNT_INI(8)=0x00; %restore PRINT command without margin for next image
             PRNT = add_checksum(PRNT_INI);
         end
-        %---------------------------------------------------
+        %%--------printing loop to flush last packets at the end of an image----------------
     end
 
     disp('Closing serial port')

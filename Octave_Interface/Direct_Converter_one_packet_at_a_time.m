@@ -35,7 +35,7 @@ for i =1:1:length(list)
     response=char(read(s, 100));
     if ~isempty(response)
         if strcmp(response(1:7),'Waiting')
-            disp(['Arduino detected on port ',char(list(i))])%last char is ACK
+            disp(['Arduino detected on port ',char(list(i))])
             valid_port=char(list(i));
             beep ()
             protocol_failure=0;
@@ -50,7 +50,11 @@ if protocol_failure==0
     fread(arduinoObj,8);%clear the port from some buffered shit, flush command does not work here, no idea why
     packets=0;
     DATA_BUFFER=[];
-    imagefiles = dir('Images/*.png');% the default format is png, other are ignored
+    imagefiles_png = dir('Images/*.png');
+    imagefiles_jpg = dir('Images/*.jpg');
+    imagefiles_jpeg = dir('Images/*.jpeg');
+    imagefiles_bmp = dir('Images/*.bmp');
+    imagefiles = [imagefiles_png; imagefiles_jpg; imagefiles_jpeg; imagefiles_bmp];
     nfiles = length(imagefiles);     % Number of files found
 
     for k=1:1:nfiles
@@ -139,14 +143,21 @@ if protocol_failure==0
             for y=1:1:vert_tile
                 tile=tile+1;
                 b=a((H:H+7),(L:L+7));
-                for i=1:8
-                    for j=1:8
-                        if b(i,j)==Lgray;  V1(j)=('1'); V2(j)=('0');end
-                        if b(i,j)==Dgray;  V1(j)=('0'); V2(j)=('1');end
-                        if b(i,j)==White;  V1(j)=('0'); V2(j)=('0');end
-                        if b(i,j)==Black;  V1(j)=('1'); V2(j)=('1');end
+                for i = 1:8
+                    V1 = repmat('0', 1, 8);  % Initialize binary string V1
+                    V2 = repmat('0', 1, 8);  % Initialize binary string V2
+                    for j = 1:8
+                        if b(i,j) == Lgray
+                            V1(j) = '1'; V2(j) = '0';
+                        elseif b(i,j) == Dgray
+                            V1(j) = '0'; V2(j) = '1';
+                        elseif b(i,j) == White
+                            V1(j) = '0'; V2(j) = '0';
+                        elseif b(i,j) == Black
+                            V1(j) = '1'; V2(j) = '1';
+                        end
                     end
-                    O=[O,bin2dec(V1),bin2dec(V2)];
+                    O = [O, bin2dec(V1), bin2dec(V2)];
                 end
                 if tile==40
                     imshow(a)
@@ -161,7 +172,7 @@ if protocol_failure==0
                     disp(['Buffering DATA packet#',num2str(packets)]);
                     %--------printing loop-----------------------------
                     send_packet(INIT);
-                    pause(0.2);%skip the first packet without
+                    pause(0.2);%skips the first packet without
                     disp(['Sending DATA packet#',num2str(packets)]);
                     send_packet(DATA_READY);
                     send_packet(EMPT);%mandatory in the protocol
