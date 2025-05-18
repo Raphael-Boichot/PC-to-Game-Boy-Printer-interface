@@ -54,11 +54,6 @@ The repo also contains the first version of code which printed packets one by on
 
 The repo also comes with a [fake printer](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Research/The%20Fake%20Printer) that allows you to generate completely fake thermal prints having exactly the aspect of what a Game Boy Printer could produce. No batteries or thermal paper required ! 
 
-## Funfacts
-
-- The printer code is compatible with printer emulators like the BitBoy, The [Arduino Game Boy Printer Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) or the [NeoGB Printer](https://github.com/zenaro147/NeoGB-Printer). This has strictly no interest apart from debugging the project without using batteries and paper.
-- The Arduino core (along with the GNU Octave script) must be directly compatible with RP2040 boards if you compile it with the [Raspberry Pi Pico Arduino core for RP2040](https://github.com/earlephilhower/arduino-pico).
-
 ## Acknowledgements
 
 - [Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
