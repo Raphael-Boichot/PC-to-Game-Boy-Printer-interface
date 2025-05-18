@@ -35,7 +35,7 @@ for i =1:1:length(list)
     flush(s);
     response=char(read(s, 100));
     if ~isempty(response)
-        if strcmp(response(1:7),'Waiting')
+        if not(isempty(strfind(response,"Waiting")))
             disp(['Arduino detected on port ',char(list(i))])
             valid_port=char(list(i));
             beep ()
@@ -48,7 +48,10 @@ end
 if protocol_failure==0
     arduinoObj = serialport(valid_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
     pause(2.5);% allows the Arduino to reboot before sending data
-    fread(arduinoObj,8);%clear the port from some buffered shit, flush command does not work here, no idea why
+    fread(arduinoObj,8);%partially clears the port from some buffered shit, flush command does not work here, no idea why
+    %looks like the way GNU Octave handles the serial port has some undocumented behavior (or could be on Arduino side)
+    %fread(arduinoObj,8) does not completely clear the port, but clearing it jammed the protocol as well as flush(arduinoObj)
+    %to be debugged later maybe, it makes no sense to me
     packets=0;
     DATA_BUFFER=[];
     imagefiles_png = dir('Images/*.png');
