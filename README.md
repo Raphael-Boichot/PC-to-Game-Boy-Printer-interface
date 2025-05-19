@@ -55,4 +55,5 @@ The repo also contains the first version of code which printed packets one by on
 - [Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
 - [Mraulio](https://github.com/Mraulio) for help and debugging.
 - [AKABigDinner](https://github.com/AKABigDinner/PC-to-GameBoy-Printer-Python) for upgrading the project to Python with a fancy PCB.
+- Author also wants to warmly thank **Frédéric Mercier** for the finding of the Pocket Printer Pikachu Edition in Japan.
 
