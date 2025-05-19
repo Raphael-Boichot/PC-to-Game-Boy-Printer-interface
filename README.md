@@ -50,10 +50,6 @@ The repo also contains the first version of code which printed packets one by on
 ![Fancy use](Pictures/Setup.jpg)
 (Do not mind the mess of wires, it's just a prototyping board also used for other projects)
 
-## Have you run out of paper ?
-
-The repo also comes with a [fake printer](https://github.com/Raphael-Boichot/PC-to-Game-Boy-Printer-interface/tree/main/Research/The%20Fake%20Printer) that allows you to generate completely fake thermal prints having exactly the aspect of what a Game Boy Printer could produce. No batteries or thermal paper required ! 
-
 ## Acknowledgements
 
 - [Andreas Hahn](https://github.com/HerrZatacke) for the [dithering pattern generator](https://herrzatacke.github.io/dither-pattern-gen/) which I took inspiration from.
