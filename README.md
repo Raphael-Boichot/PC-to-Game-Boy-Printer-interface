@@ -45,10 +45,9 @@ This code prints packets by batches of 9 if possible, using double speed mode an
 
 The repo also contains the first version of code which printed packets one by one without flux control, for history (it works of course). At that time I basically didn't know what I was doing due to peculiar way of GNU Octave to handle the serial protocol. I still do not know what I'm doing but the code works as intended.
 
-## Example of fancy use: printing emulator screenshots
+## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
-(Do not mind the mess of wires, it's just a prototyping board also used for other projects)
 
 ## Acknowledgements
 
