@@ -4,14 +4,11 @@
 %just run this script with images into the folder "Images"
 clc;
 clear;
-
 disp('-----------------------------------------------------------')
 disp('|Beware, this code is for GNU Octave ONLY !!!             |')
 disp('-----------------------------------------------------------')
-
 pkg load instrument-control
 pkg load image
-
 %-------------------------------------------------------------
 palette=0xE4;%any value is possible
 intensity=0x40;%0x00->0x7F, 0x40 is default
@@ -24,7 +21,6 @@ DATA = [0x88 0x33 0x04 0x00 0x80 0x02]; %DATA packet header, considering 640 byt
 %--------------------------------------------------------------
 PRNT = add_checksum(PRNT_INI);
 global arduinoObj
-
 list = serialportlist;
 valid_port=[];
 protocol_failure=1;
@@ -44,7 +40,6 @@ for i =1:1:length(list)
     end
     clear s
 end
-
 if protocol_failure==0
     arduinoObj = serialport(valid_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
     pause(2.5);% allows the Arduino to reboot before sending data
@@ -56,17 +51,14 @@ if protocol_failure==0
     imagefiles_bmp = dir('Images/*.bmp');
     imagefiles = [imagefiles_png; imagefiles_jpg; imagefiles_jpeg; imagefiles_bmp];
     nfiles = length(imagefiles);     % Number of files found
-
     for k=1:1:nfiles
         currentfilename = imagefiles(k).name;
         disp(['Converting image ',currentfilename,' in progress...'])
         [a,map]=imread(['Images/',currentfilename]);
-
         if not(isempty(map));%dealing with indexed images
             disp('Indexed image, converting to grayscale');
             a=ind2gray(a,map);
         end
-
         [height, width, layers]=size(a);
         if layers>1%dealing with color images
             disp('Color image, converting to grayscale');
@@ -74,30 +66,25 @@ if protocol_failure==0
             [height, width, layers]=size(a);
         end
         C=unique(a);
-
         if (length(C)<=4 && height==160);%dealing with pixel perfect image, bad orientation
             disp('Bad orientation, image rotated');
             a=imrotate(a,270);
             [heigth, width,layers]=size(a);
         end
-
         if (length(C)<=4 && not(width==160));%dealing with pixel perfect upscaled/downscaled images
             disp('Image is 2 bpp or less, which is good, but bad size: fixing it');
             a=imresize(a,160/width,"nearest");
             [heigth, width,layers]=size(a);
         end
-
         if (length(C)>4 || not(width==160));%dealing with 8-bit images in general
             disp('8-bits image rectified and dithered with Bayer matrices');
             a=image_rectifier(a);
             [height, width, layers]=size(a);
         end
-
         if length(C)==1;%dealing with one color images
             disp('Empty image -> neutralization, will print full white');
             a=zeros(height, width);
         end
-
         if not(rem(height,16)==0);%Fixing images not multiple of 16 pixels
             disp('Image height is not a multiple of 16 : fixing image');
             C=unique(a);
@@ -107,7 +94,6 @@ if protocol_failure==0
             a=[a;footer];
             [height, width, layers]=size(a);
         end
-
         [height, width, layers]=size(a);
         C=unique(a);
         disp(['Buffering image ',currentfilename,' into GB tile data...'])
@@ -128,7 +114,6 @@ if protocol_failure==0
                 Lgray=[];
                 White=C(2);
         end;
-
         hor_tile=width/8;
         vert_tile=height/8;
         tile=0;
@@ -193,7 +178,7 @@ if protocol_failure==0
                         end
                         pause(0.25);%time for the printer head to fire
                         [response_packet]=send_packet(INQU);
-                        while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
+                        while not(ismember(0x06, response_packet))%resilient to packet misaligned
                             pause(0.25);
                             [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
                             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
@@ -219,7 +204,6 @@ if protocol_failure==0
                 end
             end
         end
-
         imshow(a)
         drawnow
         %%--------printing loop to flush last packets at the end of an image----------------
@@ -235,7 +219,7 @@ if protocol_failure==0
             send_packet(PRNT);
             pause(0.25);%time for the printer head to fire
             [response_packet]=send_packet(INQU);
-            while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
+            while not(ismember(0x06, response_packet))%resilient to packet misaligned
                 pause(0.25);
                 [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
                 disp(strjoin(cellstr(num2hex(response_packet))', ' '))
@@ -251,12 +235,15 @@ if protocol_failure==0
         end
         %%--------printing loop to flush last packets at the end of an image----------------
     end
-
     disp('Closing serial port')
     flush(arduinoObj);
     arduinoObj=[];
     disp('End of printing')
     close all
 else
-    disp('No device found, check connecion !')
+    disp('No device found, check connection with the Arduino !')
+    disp('// If you''re using the Game Boy Printer emulator at:')
+    disp('// https://github.com/mofosyne/arduino-gameboy-printer-emulator')
+    disp('// switch the printer ON before connecting the Arduino')
+    disp('// It has to detect a valid printer to boot in printer interface mode')
 end

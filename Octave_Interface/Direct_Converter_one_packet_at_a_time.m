@@ -23,7 +23,6 @@ DATA = [0x88 0x33 0x04 0x00 0x80 0x02]; %DATA packet header, considering 640 byt
 %--------------------------------------------------------------
 PRNT = add_checksum(PRNT_INI);
 global arduinoObj
-
 list = serialportlist;
 valid_port=[];
 protocol_failure=1;
@@ -43,7 +42,6 @@ for i =1:1:length(list)
     end
     clear s
 end
-
 if protocol_failure==0
     arduinoObj = serialport(valid_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
     pause(2.5);% allows the Arduino to reboot before sending data
@@ -56,7 +54,6 @@ if protocol_failure==0
     imagefiles_bmp = dir('Images/*.bmp');
     imagefiles = [imagefiles_png; imagefiles_jpg; imagefiles_jpeg; imagefiles_bmp];
     nfiles = length(imagefiles);     % Number of files found
-
     for k=1:1:nfiles
         currentfilename = imagefiles(k).name;
         disp(['Converting image ',currentfilename,' in progress...'])
@@ -66,7 +63,6 @@ if protocol_failure==0
             disp('Indexed image, converting to grayscale');
             a=ind2gray(a,map);
         end
-
         [height, width, layers]=size(a);
         if layers>1%dealing with color images
             disp('Color image, converting to grayscale');
@@ -74,30 +70,25 @@ if protocol_failure==0
             [height, width, layers]=size(a);
         end
         C=unique(a);
-
         if (length(C)<=4 && height==160);%dealing with pixel perfect image, bad orientation
             disp('Bad orientation, image rotated');
             a=imrotate(a,270);
             [heigth, width,layers]=size(a);
         end
-
         if (length(C)<=4 && not(width==160));%dealing with pixel perfect upscaled/downscaled images
             disp('Image is 2 bpp or less, which is good, but bad size: fixing it');
             a=imresize(a,160/width,"nearest");
             [heigth, width,layers]=size(a);
         end
-
         if (length(C)>4 || not(width==160));%dealing with 8-bit images in general
             disp('8-bits image rectified and dithered with Bayer matrices');
             a=image_rectifier(a);
             [height, width, layers]=size(a);
         end
-
         if length(C)==1;%dealing with one color images
             disp('Empty image -> neutralization, will print full white');
             a=zeros(height, width);
         end
-
         if not(rem(height,16)==0);%Fixing images not multiple of 16 pixels
             disp('Image height is not a multiple of 16 : fixing image');
             C=unique(a);
@@ -107,7 +98,6 @@ if protocol_failure==0
             a=[a;footer];
             [height, width, layers]=size(a);
         end
-
         [height, width, layers]=size(a);
         C=unique(a);
         disp(['Buffering image ',currentfilename,' into GB tile data...'])
@@ -128,7 +118,6 @@ if protocol_failure==0
                 Lgray=[];
                 White=C(2);
         end;
-
         hor_tile=width/8;
         vert_tile=height/8;
         tile=0;
@@ -177,7 +166,7 @@ if protocol_failure==0
                     send_packet(DATA_READY);
                     send_packet(EMPT);%mandatory in the protocol
                     send_packet(PRNT);
-                    for i=1:1:13
+                    for i=1:1:15
                         pause(0.1);%Time for the printer head to print one line of 16 pixels
                         [response_packet]=send_packet(INQU);
                         disp(strjoin(cellstr(num2hex(response_packet))', ' '))
@@ -197,7 +186,6 @@ if protocol_failure==0
                 end
             end
         end
-
         packets=packets+3;
         imshow(a)
         drawnow
@@ -219,12 +207,15 @@ if protocol_failure==0
         pause(0.2);
         %---------------------------------------------------
     end
-
     disp('Closing serial port')
     flush(arduinoObj);
     arduinoObj=[];
     disp('End of printing')
     close all
 else
-    disp('No device found, check connecion !')
+    disp('No device found, check connection with the Arduino !')
+    disp('// If you''re using the Game Boy Printer emulator at:')
+    disp('// https://github.com/mofosyne/arduino-gameboy-printer-emulator')
+    disp('// switch the printer ON before connecting the Arduino')
+    disp('// It has to detect a valid printer to boot in printer interface mode')
 end
