@@ -4,4 +4,5 @@ for i=1:1:length(packet_TX)
     fwrite(arduinoObj,packet_TX(i));
     response_packet(i)=fread(arduinoObj,1);
 end
-%disp(strjoin(cellstr(num2hex(response_packet))', ' '))
+response_packet = auto_shifting(response_packet);
+

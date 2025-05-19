@@ -48,10 +48,6 @@ end
 if protocol_failure==0
     arduinoObj = serialport(valid_port,'baudrate',9600,'parity','none','timeout',255); %set the Arduino com port here
     pause(2.5);% allows the Arduino to reboot before sending data
-    response=fread(arduinoObj,8);%partially clears the port from some buffered shit, flush command does not work here, no idea why
-    %looks like the way GNU Octave handles the serial port has some undocumented behavior (or could be on Arduino side)
-    %fread(arduinoObj,8) does not completely clear the port, but clearing it jammed the protocol as well as flush(arduinoObj)
-    %to be debugged later maybe, it makes no sense to me
     packets=0;
     DATA_BUFFER=[];
     imagefiles_png = dir('Images/*.png');
@@ -195,15 +191,15 @@ if protocol_failure==0
                             PRNT_INI(8)=0x00; %restore PRINT command without margin for next image
                             PRNT = add_checksum(PRNT_INI);
                         end
-                        pause(0.5);%time for the printer head to fire
+                        pause(0.25);%time for the printer head to fire
                         [response_packet]=send_packet(INQU);
                         while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
-                            pause(0.5);
+                            pause(0.25);
                             [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
                             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
                         end
                         while ismember(0x06, response_packet)%while printer is busy printing...
-                            pause(0.5);
+                            pause(0.25);
                             [response_packet]=send_packet(INQU);
                             disp(strjoin(cellstr(num2hex(response_packet))', ' '))
                         end
@@ -237,15 +233,15 @@ if protocol_failure==0
             PRNT_INI(8)=margin; %prepare PRINT command with margin, always, as it is the end of an image
             PRNT = add_checksum(PRNT_INI);
             send_packet(PRNT);
-            pause(0.5);%time for the printer head to fire
+            pause(0.25);%time for the printer head to fire
             [response_packet]=send_packet(INQU);
             while not(ismember(0x06, response_packet))%shitty but packets are sometimes misaligned
-                pause(0.5);
+                pause(0.25);
                 [response_packet]=send_packet(INQU);%first response is always 0x08 due to some serial oddity with Octave, flushing it
                 disp(strjoin(cellstr(num2hex(response_packet))', ' '))
             end
             while ismember(0x06, response_packet)%while printer is busy printing...
-                pause(0.5);
+                pause(0.25);
                 [response_packet]=send_packet(INQU);
                 disp(strjoin(cellstr(num2hex(response_packet))', ' '))
             end
