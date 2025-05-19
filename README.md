@@ -48,6 +48,7 @@ The repo also contains the first version of code which printed packets one by on
 ## Example of fancy use
 
 ![Fancy use](Pictures/Setup.jpg)
+(I know, the Pikachu edition is gorgious)
 
 ## Acknowledgements
 
