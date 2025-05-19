@@ -17,7 +17,7 @@ Here GNU Octave is used to encode images into Game Boy Tile Format, make legit p
 
 ![Game Boy Printer to Arduino Uno pinout](Pictures/Pinout.png)
 
-The pinout uses only 4 wires, so it's very easy to make ! It must even work without SOUT connected !
+The pinout uses only 4 wires, so it's very easy to make !
 
 ## Dedicated PCB
 
