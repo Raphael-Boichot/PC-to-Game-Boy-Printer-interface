@@ -4,9 +4,9 @@ Dithering_patterns = [0x2A, 0x5E, 0x9B, 0x51, 0x8B, 0xCA, 0x33, 0x69, 0xA6, 0x5A
 a=image_non_rectified;
 [height, width,layers]=size(a);
 
-%if (height<width)
-%    a=imrotate(a,270);
-%end
+if (height<width)
+    a=imrotate(a,270);
+end
 
 [height, width,layers]=size(a);
 a=imresize(a,160/width,"cubic");
